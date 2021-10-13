@@ -15,6 +15,7 @@ TEMPLATE = """
 <!DOCTYPE html>
 <html>
   <head>
+   
   </head>
   <body>
     <div>
@@ -30,8 +31,8 @@ def mod_handler(request, mod_name):
         return 404
     else:
         list = [x for x in dir(__import__(mod_name)) if not x.startswith('_')]
-        links = ['<a href ="{}">{}</a><br>'.format(name,name) for name in list]
-        return HttpResponse(TEMPLATE.format(content=''.join(links),))
+        links = ['<a href ="{}/{}">{}</a><br>'.format(mod_name,name,name) for name in list]
+        return HttpResponse(TEMPLATE.format( content=''.join(links)))
 
 
 def obj_handler(request, mod_name, obj_name):
@@ -43,9 +44,8 @@ def obj_handler(request, mod_name, obj_name):
 
 
 
-
 urlpatterns = [
-               path('doc/<mod_name>', mod_handler),
+               path('doc/<mod_name>', mod_handler, ),
                path('doc/<mod_name>/<obj_name>', obj_handler)
               ]
 
